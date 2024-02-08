@@ -16,14 +16,15 @@
     <%= form.text_field :title, required: true, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
   </div>
 
-  <div class="my-5">
+    <div class="my-5">
     <%= form.label :description %>
-    <%= form.text_area :description, rows: 4, required: true, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+    <%= form.text_area :description, rows: 4, required: true, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full", id: "description_textarea"  %>
+    <span id="word_count" class="text-sm text-gray-500">Words:0/1500: 0</span>
   </div>
 
   <div class="my-5">
     <%= form.label :image_url %>
-    <%= form.file_field :image_url%>
+    <%= form.text_field :image_url, required: true, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
   </div>
 
   <div class="my-5">
@@ -32,6 +33,40 @@
   </div>
 
   <div class="inline">
-    <%= form.submit required: true, class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
+    <%= form.submit 'sAVE', class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
   </div>
 <% end %>
+
+<script>
+    // Function to count words in the text area
+    function countWords(text) {
+        return text.trim().split(/\s+/).length;
+    }
+
+    // Function to update word count display
+    function updateWordCount() {
+        var text = document.getElementById("description_textarea").value;
+        var wordCount = countWords(text);
+        document.getElementById("word_count").innerText = "Word:1/1500: " + wordCount;
+    }
+
+    // Function to validate text area
+    function validateTextarea() {
+        var maxWords = 1500;
+        var text = document.getElementById("description_textarea").value;
+        var wordCount = countWords(text);
+        if (wordCount > maxWords) {
+            alert("Maximum word count exceeded. Please limit your input to 1500 words.");
+            // Optionally, you can truncate the text or prevent further input here
+            return false;
+        }
+        return true;
+    }
+
+    // Attach event listeners for input and change events
+    var textarea = document.getElementById("description_textarea");
+    textarea.addEventListener("input", function() {
+        updateWordCount();
+        validateTextarea();
+    });
+</script>
