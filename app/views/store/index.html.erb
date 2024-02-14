@@ -9,24 +9,29 @@ inline-block" id="notice">
     Your Pragmatic Catalog
   </h1>
   <ul>
-    <% @products.each do |product| %>
-      <li class='flex mb-6'>
-        <%= link_to product do%>
-        <%= image_tag(product.image_url, class: "object-contain w-40 h-48 shadow mr-6") %>
-        <%end%>
-        <div>
-          <%= link_to (product.title), product, class: "font-bold text-lg mb-3" %>
-          <p>
-            <%= sanitize(product.description) %>
-          </p>
-          <div class="mt-3">
-            <%= number_to_currency(product.price) %>
-          </div>
-        </div>
-      </li>
+    <% cache @products do %>
+      <% @products.each do |product| %>
+        <li class='flex mb-6'>
+          <% cache @products do %>
+
+            <%= link_to product do %>
+              <%= image_tag(product.image_url, class: "object-contain w-40 h-48 shadow mr-6") %>
+            <% end %>
+            <div>
+              <%= link_to (product.title), product, class: "font-bold text-lg mb-3" %>
+              <p>
+                <%= sanitize(product.description) %>
+              </p>
+              <div class="mt-3">
+                <%= number_to_currency(product.price) %>
+              </div>
+            </div>
+            </li>
+          <% end %>
+      <% end %>
     <% end %></ul>
-      </div>
-  <!--<<div class="flex justify-between items-center pb-8">
+</div>
+<!--<<div class="flex justify-between items-center pb-8">
     <h1 class="mx-auto text-lg font-bold text-4xl">Products</h1>
   </div>
   <table id="products" class="mx-auto">
@@ -47,7 +52,7 @@ text-white block font-medium" %>
       <tr class="<%##= cycle('bg-green-50', 'bg-white') %>">
         <td class="px-2 py-3">
           <%#= link_to product do%>
-              <%##= image_tag(product.image_url, class: 'w-40') %></td>
+<%##= image_tag(product.image_url, class: 'w-40') %></td>
            <%#end%>
 
         <td>

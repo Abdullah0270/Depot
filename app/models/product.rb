@@ -1,6 +1,7 @@
 class Product < ApplicationRecord
   validates :description, length: { maximum: 1500, message: "Maximum word count exceeded. Please limit your input to 1500 words." }
-  validates :price, numericality: { greater_than_or_equal_to: 0.01 }
+  validates :price, presence: true
+  validates :price, numericality: { greater_than_or_equal_to: 1, less_than_or_equal_to: 100 ,message:"Price must be less than or equal to 100"}
   validates :title, uniqueness: true
   validates :image_url, allow_blank: true, format: { with:
                                                        %r{\.(gif|jpg|png)\z}i,

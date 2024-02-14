@@ -2,6 +2,7 @@
 <html>
 <head>
   <title>Pragprog Books Online Store</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
@@ -12,6 +13,7 @@
 </head>
 <body>
 <header class="bg-green-700">
+  <div id="current-time" class="text-3xl font-bold mt-4 ml-auto mr-auto"></div>
   <%= image_tag 'logo.png', alt: 'The Pragmatic Bookshelf' %>
   <h1><%= @page_title %></h1>
 </header>
@@ -30,3 +32,18 @@
 </section>
 </body>
 </html>
+<script>
+    $(document).ready(function() {
+        updateTime(); // Update the time immediately on page load
+        setInterval(updateTime, 1000); // Update the time every second
+    });
+
+    function updateTime() {
+        $.ajax({
+            url: '/current_time',
+            success: function(data) {
+                $('#current-time').text(data); // Update the time display
+            }
+        });
+    }
+</script>

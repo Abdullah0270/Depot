@@ -29,11 +29,12 @@
 
   <div class="my-5">
     <%= form.label :price %>
-    <%= form.text_field :price, required: true, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+    <%= form.text_field :price, required: true, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full", id: "price-input" %>
+    <span id="price-validation-error" class="text-red-500 hidden">Price must be between 1 and 100.</span>
   </div>
 
   <div class="inline">
-    <%= form.submit 'sAVE', class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
+    <%= form.submit 'Save', class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
   </div>
 <% end %>
 
@@ -69,4 +70,23 @@
         updateWordCount();
         validateTextarea();
     });
+
+    function setupPriceValidation() {
+        var priceInput = document.getElementById("price-input");
+        var priceValidationError = document.getElementById("price-validation-error");
+
+        priceInput.addEventListener("input", function() {
+            var price = parseFloat(priceInput.value);
+            if (isNaN(price) || price < 1 || price > 100) {
+                if (price > 100) {
+                    alert("Price cannot exceed 100.");
+                }
+                priceValidationError.classList.remove("hidden");
+            } else {
+                priceValidationError.classList.add("hidden");
+            }
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", setupPriceValidation);
 </script>
